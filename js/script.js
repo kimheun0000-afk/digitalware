@@ -214,6 +214,7 @@ const CONFIG = {
             document.getElementById('current-temp-min-2').textContent = `${Math.round(data.main.temp_min)}°C`;
             document.getElementById('current-temp-max-2').textContent = `${Math.round(data.main.temp_max)}°C`;
             document.getElementById('current-weather-icon').src = getWeatherIconUrl(data.weather[0].icon);
+            setBackgroundVideo(data.weather[0].main, data.weather[0].icon);
             return data;
         } catch (error) {
             console.error('날씨 정보 가져오기 실패:', error);
@@ -693,12 +694,18 @@ const CONFIG = {
 
 
 
-
-
 let bgVideo;
 
 document.addEventListener("DOMContentLoaded", () => {
     bgVideo = document.getElementById("bgVideo");
+    
+bgVideo.addEventListener("ended", () => {
+    bgVideo.currentTime = 0;
+    bgVideo.play();
+});
+
+
+
 });
 
 
@@ -771,18 +778,7 @@ function changeVideo(src, loop) {
         bgVideo.onloadeddata = () => {
             bgVideo.play().catch(() => {});
             bgVideo.style.opacity = 1;
-        };
-    }, 300);
-}
+        };    
+    }, 300);    
+}    
 
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    bgVideo = document.getElementById("bgVideo");
-
-    bgVideo.addEventListener("ended", () => {
-        bgVideo.currentTime = 0;
-        bgVideo.play();
-    });
-});
